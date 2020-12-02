@@ -1,36 +1,51 @@
-// Write your JavaScript code here!
-
-/* This block of code shows how to format the HTML once you fetch some planetary JSON!
-<h2>Mission Destination</h2>
-<ol>
-   <li>Name: ${}</li>
-   <li>Diameter: ${}</li>
-   <li>Star: ${}</li>
-   <li>Distance from Earth: ${}</li>
-   <li>Number of Moons: ${}</li>
-</ol>
-<img src="${}">
-*/
 window.addEventListener('load', () => {
-    document.querySelector('form').addEventListener('submit', (e) => {
-        e.preventDefault()
-        try {
-            const formData = parseInput(e.target)
-            validateInput(formData)
-            checkShuttleReadiness(formData)
-        } catch (error) {
-            if (error === 'blankField') {
-                window.alert('All fields are required!')
-            } else if (error === 'invalidField') {
-                window.alert(
-                    'Make sure to enter valid information for each field!'
-                )
-            } else {
-                console.error(error)
-            }
-        }
-    })
+    document.querySelector('form').addEventListener('submit', handleSubmit)
+    initializeMissionData()
 })
+
+async function initializeMissionData() {
+    const planetData = await fetchMissionData()
+    buildMissionDataHTML(planetData[0])
+}
+
+async function fetchMissionData() {
+    try {
+        const response = await fetch('./planets.json')
+        return await response.json()
+    } catch (error) {
+        console.error('Error retrieving planet data')
+    }
+}
+
+function buildMissionDataHTML(planet) {
+    const missionDataHTML = `<h2>Mission Destination</h2>
+	<ol>
+	   <li>Name: ${planet.name}</li>
+	   <li>Diameter: ${planet.diameter}</li>
+	   <li>Star: ${planet.star}</li>
+	   <li>Distance from Earth: ${planet.distance}</li>
+	   <li>Number of Moons: ${planet.moons}</li>
+	</ol>
+	<img src="${planet.image}">`
+    document.querySelector('#missionTarget').innerHTML = missionDataHTML
+}
+
+function handleSubmit(e) {
+    e.preventDefault()
+    try {
+        const formData = parseInput(e.target)
+        validateInput(formData)
+        checkShuttleReadiness(formData)
+    } catch (error) {
+        if (error === 'blankField') {
+            window.alert('All fields are required!')
+        } else if (error === 'invalidField') {
+            window.alert('Make sure to enter valid information for each field!')
+        } else {
+            console.error(error)
+        }
+    }
+}
 
 function parseInput(inputElements) {
     const formData = {}
