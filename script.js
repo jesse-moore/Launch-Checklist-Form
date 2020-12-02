@@ -5,7 +5,13 @@ window.addEventListener('load', () => {
 
 async function initializeMissionData() {
     const planetData = await fetchMissionData()
-    buildMissionDataHTML(planetData[0])
+    const planet = selectRandomElement(planetData)
+    buildMissionDataHTML(planet)
+}
+
+function selectRandomElement(arr) {
+    const randomIndex = Math.floor(Math.random() * arr.length)
+    return arr[randomIndex]
 }
 
 async function fetchMissionData() {
