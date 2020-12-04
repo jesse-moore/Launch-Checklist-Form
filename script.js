@@ -71,33 +71,10 @@ function parseInput(inputElements) {
 
 function validateInput(formData) {
     const { pilotName, copilotName, fuelLevel, cargoMass } = formData
-
-    if (!pilotName || !copilotName || !fuelLevel || !cargoMass) {
-        throw 'blankField'
-    }
-
-    if (
-        !isString(pilotName) ||
-        !isString(copilotName) ||
-        !isNumber(fuelLevel) ||
-        !isNumber(cargoMass)
-    ) {
-        throw 'invalidField'
-    }
-}
-
-function isString(string) {
-    if (typeof string === 'string' && isNaN(Number(string))) {
-        return true
-    }
-    return false
-}
-
-function isNumber(number) {
-    if (!isNaN(Number(number))) {
-        return true
-    }
-    return false
+    validate.input(pilotName).hasValue().isString()
+    validate.input(copilotName).hasValue().isString()
+    validate.input(fuelLevel).hasValue().isNumber()
+    validate.input(cargoMass).hasValue().isNumber()
 }
 
 function checkShuttleReadiness({ fuelLevel, cargoMass }) {
@@ -132,4 +109,32 @@ function checkShuttleReadiness({ fuelLevel, cargoMass }) {
         launchStatus.style.color = 'red'
         document.querySelector('#faultyItems').style.visibility = 'visible'
     }
+}
+
+const validate = {
+    input: function (value) {
+        this.value = value
+        if (typeof this.value === 'string') {
+            return this
+        }
+        throw new Error('string argument required');
+    },
+    hasValue: function () {
+        if (this.value.length > 0) {
+            return this
+        }
+        throw 'blankField'
+    },
+    isString: function () {
+        if (isNaN(Number(this.value))) {
+            return this
+        }
+        throw 'invalidField'
+    },
+    isNumber: function () {
+        if (!isNaN(Number(this.value))) {
+            return this
+        }
+        throw 'invalidField'
+    },
 }
