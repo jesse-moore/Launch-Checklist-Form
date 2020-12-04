@@ -55,16 +55,18 @@ function handleSubmit(e) {
 }
 
 function parseInput(inputElements) {
-    const formData = {}
-    for (const index in inputElements) {
-        if (inputElements.hasOwnProperty(index)) {
-            const { value, name } = inputElements[index]
-            if (name) {
-                formData[name] = value
-            }
-        }
+    const {
+        pilotName,
+        copilotName,
+        fuelLevel,
+        cargoMass,
+    } = inputElements.elements
+    return {
+        pilotName: pilotName.value,
+        copilotName: copilotName.value,
+        fuelLevel: fuelLevel.value,
+        cargoMass: cargoMass.value,
     }
-    return formData
 }
 
 function validateInput(formData) {
