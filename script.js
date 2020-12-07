@@ -114,25 +114,23 @@ function checkShuttleReadiness({ fuelLevel, cargoMass }) {
 const validate = {
     input: function (value) {
         this.value = value
-        if (typeof this.value === 'string') {
-            return this
-        }
-        throw new Error('string argument required');
+        return this
     },
     hasValue: function () {
-        if (this.value.length > 0) {
+        if (String(this.value).length > 0) {
             return this
         }
         throw 'blankField'
     },
     isString: function () {
-        if (isNaN(Number(this.value))) {
+        if (typeof this.value === 'string' && isNaN(Number(this.value))) {
             return this
         }
         throw 'invalidField'
     },
     isNumber: function () {
-        if (!isNaN(Number(this.value))) {
+        const numberValue = Number(this.value)
+        if (!isNaN(numberValue)) {
             return this
         }
         throw 'invalidField'
