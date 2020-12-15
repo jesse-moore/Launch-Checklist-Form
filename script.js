@@ -17,7 +17,9 @@ function selectRandomElement(arr) {
 
 async function fetchMissionData() {
     try {
-        const response = await fetch('./planets.json')
+        const response = await fetch(
+            'https://handlers.education.launchcode.org/static/planets.json'
+        )
         return await response.json()
     } catch (error) {
         console.error('Error retrieving planet data')
