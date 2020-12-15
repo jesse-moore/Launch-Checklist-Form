@@ -46,6 +46,7 @@ function handleSubmit(e) {
         validateInput(formData)
         checkShuttleReadiness(formData)
     } catch (error) {
+        resetlaunchStatus()
         if (error === 'blankField') {
             window.alert('All fields are required!')
         } else if (error === 'invalidField') {
@@ -77,6 +78,13 @@ function validateInput(formData) {
     validate.input(copilotName).hasValue().isString()
     validate.input(fuelLevel).hasValue().isNumber()
     validate.input(cargoMass).hasValue().isNumber()
+}
+
+function resetlaunchStatus() {
+    const launchStatus = document.querySelector('#launchStatus')
+    launchStatus.innerText = 'Awaiting Information Before Launch'
+    launchStatus.style.color = 'unset'
+    document.querySelector('#faultyItems').style.visibility = 'hidden'
 }
 
 function checkShuttleReadiness({ fuelLevel, cargoMass }) {
